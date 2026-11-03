@@ -33,6 +33,10 @@
 
 *,*::before,*::after{box-sizing:border-box}
 
+/* an author-set display (flex/grid) otherwise beats the hidden
+   attribute, which is how a hidden form stays on screen */
+[hidden]{display:none !important}
+
 html{
   scroll-behavior:smooth;
   /* the sticky nav shouldn't sit on top of the thing you jumped to */
@@ -98,6 +102,9 @@ a{color:inherit}
 .btn--lg{font-size:19px;padding:15px 30px;min-height:56px}
 .btn:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
 .btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+
+/* the hero's secondary action — "try rilo now" stays the loud one */
+.btn--ghost{background:var(--card);color:var(--ink)}
 
 /* the non-clickable "coming soon" note — becomes a real button
    when APP_STORE_URL is set in js/main.js */
@@ -444,6 +451,58 @@ a{color:inherit}
 .q p{margin:0;padding:0 18px 18px 67px;color:var(--ink-3)}
 @media (max-width:520px){
   .q p{padding-left:18px}
+}
+
+/* ───────────────────────── waitlist ───────────────────────── */
+
+.sr-only{
+  position:absolute;width:1px;height:1px;
+  padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
+
+/* the FAQ above is tinted, so the waitlist takes the page colour to
+   stay a distinct block rather than merging into it */
+.wait{background:var(--page)}
+.head--tight{margin-bottom:28px}
+.head--tight .lede{margin-inline:auto;max-width:36ch}
+
+.wait__form{
+  display:flex;flex-direction:column;gap:12px;
+  max-width:540px;margin:0 auto;
+}
+.wait__form input{
+  flex:1 1 auto;min-width:0;
+  font-family:Inter,sans-serif;font-size:17px;
+  color:var(--ink);
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:999px;
+  box-shadow:0 4px 0 var(--line);
+  padding:0 22px;min-height:56px;
+}
+.wait__form input::placeholder{color:#7D9185}
+.wait__form input[aria-invalid="true"]{border-color:#B3261E}
+.wait__form .btn{flex:0 0 auto}
+
+@media (min-width:620px){
+  .wait__form{flex-direction:row;align-items:stretch}
+}
+
+.wait__error{
+  margin:14px auto 0;max-width:540px;
+  text-align:center;font-size:15px;font-weight:500;
+  color:#8C1D18;
+}
+
+.wait__done{
+  max-width:540px;margin:0 auto;text-align:center;
+}
+.wait__done img{width:132px;margin:0 auto 10px}
+.wait__done p{
+  margin:0;
+  font-family:Fredoka,sans-serif;font-weight:600;
+  font-size:clamp(1.2rem,4.4vw,1.5rem);
 }
 
 /* ───────────────────────── final cta ───────────────────────── */

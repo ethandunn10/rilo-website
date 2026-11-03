@@ -42,6 +42,7 @@
       <a href="#how">how it works</a>
       <a href="#features">features</a>
       <a href="#faq">faq</a>
+      <a href="#waitlist" class="nav__wait">join the waitlist</a>
     </nav>
     <a class="btn btn--sm" href="https://tryrilo.vercel.app">try rilo</a>
   </div>
@@ -61,7 +62,8 @@
 
     <div class="hero__cta">
       <a class="btn btn--lg" href="https://tryrilo.vercel.app">try rilo now</a>
-      <div class="badge" id="app-store-slot">coming soon to iPhone</div>
+      <!-- swapped for a real App Store button once APP_STORE_URL is set -->
+      <a class="btn btn--lg btn--ghost" id="app-store-slot" href="#waitlist">join the waitlist</a>
     </div>
 
     <div class="fan" role="group" aria-label="rilo on iPhone">
@@ -338,8 +340,43 @@
           <img src="img/rilo/original-sleepy.svg" alt="" width="208" height="182" loading="lazy">
           <span>when is it on the app store?</span>
         </summary>
-        <p>soon. try the demo now.</p>
+        <!-- the shipped answer replaces this once APP_STORE_URL is set,
+             so it stops pointing at a waitlist that's no longer there -->
+        <p data-shipped="it's out. grab it on the App Store.">soon. join the waitlist and you'll be first to know.</p>
       </details>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── waitlist ─────────────────────────
+     Hidden by js/main.js once APP_STORE_URL is set. -->
+<section class="band wait" id="waitlist">
+  <div class="wrap wrap--narrow">
+    <div class="head head--tight reveal">
+      <p class="label">waitlist</p>
+      <h2>be first when rilo hits the App Store.</h2>
+      <p class="lede">drop your email. no spam, just one email when it's live.</p>
+    </div>
+
+    <form class="wait__form reveal" id="waitlist-form" novalidate>
+      <label class="sr-only" for="wait-email">your email address</label>
+      <input
+        id="wait-email"
+        type="email"
+        name="email"
+        inputmode="email"
+        autocomplete="email"
+        placeholder="you@email.com"
+        aria-describedby="wait-error"
+        required>
+      <button class="btn btn--lg" type="submit" id="wait-submit">join the waitlist</button>
+    </form>
+
+    <p class="wait__error" id="wait-error" role="alert" hidden></p>
+
+    <div class="wait__done" id="wait-done" hidden>
+      <img src="img/rilo/original-proud.svg" alt="rilo, looking proud" width="208" height="182" loading="lazy">
+      <p>you're on the list. see you soon.</p>
     </div>
   </div>
 </section>

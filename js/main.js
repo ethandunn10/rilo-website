@@ -15,7 +15,19 @@ const APP_STORE_URL = null;
 
 function wireAppStore() {
   const slot = document.getElementById('app-store-slot');
-  if (!slot || !APP_STORE_URL) return; /* leave the "coming soon" note alone */
+  if (!APP_STORE_URL) return; /* leave the "join the waitlist" button alone */
+
+  /* it's shipped — there's nothing to wait for any more */
+  const section = document.getElementById('waitlist');
+  if (section) section.hidden = true;
+  document.querySelectorAll('.nav__wait').forEach((el) => el.remove());
+
+  /* any copy that pointed at the waitlist needs its shipped wording */
+  document.querySelectorAll('[data-shipped]').forEach((el) => {
+    el.textContent = el.dataset.shipped;
+  });
+
+  if (!slot) return;
 
   const a = document.createElement('a');
   a.className = 'btn btn--lg';
@@ -76,6 +88,74 @@ function buildSkins() {
   row.innerHTML = html;
 }
 
+/* ───────────────────────── the waitlist ─────────────────────────
+   Posts straight to the "Rilo Waitlist" Google Form. mode:'no-cors'
+   means the browser sends it but hands back an opaque response —
+   the visitor never leaves the page, and we can't read a status
+   code, so a completed request counts as sent. */
+
+const WAITLIST_ACTION =
+  'https://docs.google.com/forms/d/e/1FAIpQLSc6je1N1Jibhe63PQ7PoaXR2IuIu1c3qspHluXf7-0kaGcFuA/formResponse';
+/* the form's one question: "Email" */
+const WAITLIST_FIELD = 'entry.849613997';
+
+/* deliberately loose — something@something.tld with no spaces.
+   Anything stricter starts rejecting addresses that really work. */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function wireWaitlist() {
+  const form = document.getElementById('waitlist-form');
+  if (!form) return;
+
+  const input = document.getElementById('wait-email');
+  const button = document.getElementById('wait-submit');
+  const error = document.getElementById('wait-error');
+  const done = document.getElementById('wait-done');
+
+  const fail = (msg) => {
+    error.textContent = msg;
+    error.hidden = false;
+    input.setAttribute('aria-invalid', 'true');
+    input.focus();
+  };
+
+  const clear = () => {
+    error.hidden = true;
+    error.textContent = '';
+    input.removeAttribute('aria-invalid');
+  };
+
+  input.addEventListener('input', clear);
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = input.value.trim();
+    if (!email) return fail("looks like you left that blank — pop your email in.");
+    if (!EMAIL.test(email)) return fail("that doesn't look like an email. mind checking it?");
+
+    clear();
+    button.disabled = true;
+    button.textContent = 'sending…';
+
+    const body = new URLSearchParams();
+    body.append(WAITLIST_FIELD, email);
+
+    try {
+      await fetch(WAITLIST_ACTION, { method: 'POST', mode: 'no-cors', body });
+    } catch (err) {
+      /* only a genuinely dead network lands here */
+      button.disabled = false;
+      button.textContent = 'join the waitlist';
+      return fail("couldn't reach the list just then. try again in a sec?");
+    }
+
+    form.hidden = true;
+    done.hidden = false;
+    return undefined;
+  });
+}
+
 /* ───────────────────── fade / slide in on scroll ───────────────────── */
 
 function wireReveals() {
@@ -103,4 +183,5 @@ function wireReveals() {
 
 wireAppStore();
 buildSkins();
+wireWaitlist();
 wireReveals();
