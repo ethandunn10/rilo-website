@@ -1,0 +1,532 @@
+/* ───────────────────────────────────────────────────────────
+   Rilo — marketing site
+   Palette lifted from the app itself (lib/themes.js "grass"
+   + index.css), so the site and the app look like one thing.
+   ─────────────────────────────────────────────────────────── */
+
+:root{
+  --ink:#12301A;
+  --ink-2:#2C4A36;
+  --ink-3:#3D5A46;
+  --card:#FFFBF1;
+  --line:#12301A;
+
+  --green:#2E8B3E;
+  --green-lt:#4CC160;
+  --green-pale:#A8DCA0;
+  /* Rilo's green is a shade too light for small text on the cream
+     and tinted backgrounds — this one clears 4.5:1 on both */
+  --green-ink:#246E31;
+
+  --sky-1:#A6DDF0;
+  --sky-2:#CDEDF0;
+  --sky-3:#EAF6E6;
+  --sky-4:#EEF8E6;
+
+  --page:#F6FAF2;
+  --radius:22px;
+  --wrap:1120px;
+
+  --shadow:0 18px 40px rgba(18,48,26,.16);
+  --shadow-sm:0 8px 20px rgba(18,48,26,.10);
+}
+
+*,*::before,*::after{box-sizing:border-box}
+
+html{
+  scroll-behavior:smooth;
+  /* the sticky nav shouldn't sit on top of the thing you jumped to */
+  scroll-padding-top:80px;
+  -webkit-text-size-adjust:100%;
+}
+
+body{
+  margin:0;
+  background:var(--page);
+  color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  font-size:17px;
+  line-height:1.6;
+  /* most visitors arrive from instagram on a phone — nothing may spill sideways */
+  overflow-x:hidden;
+}
+
+h1,h2,h3{
+  font-family:Fredoka,Inter,system-ui,sans-serif;
+  font-weight:600;
+  line-height:1.08;
+  letter-spacing:-.01em;
+  margin:0;
+  text-wrap:balance;
+}
+
+img{max-width:100%;height:auto;display:block}
+a{color:inherit}
+
+/* parked above the viewport rather than off to the left, which
+   would widen the page */
+.skip-link{
+  position:absolute;left:0;top:-80px;z-index:200;
+  background:var(--ink);color:#fff;padding:12px 18px;border-radius:0 0 12px 0;
+  font-weight:600;
+}
+.skip-link:focus{top:0}
+
+:focus-visible{
+  outline:3px solid var(--ink);
+  outline-offset:3px;
+  border-radius:6px;
+}
+
+.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:20px}
+.wrap--narrow{max-width:760px}
+
+/* ───────────────────────── buttons ───────────────────────── */
+
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  gap:8px;
+  font-family:Fredoka,sans-serif;font-weight:600;
+  text-decoration:none;
+  background:var(--ink);color:#fff;
+  border:2px solid var(--line);
+  border-radius:999px;
+  box-shadow:0 4px 0 var(--line);
+  transition:transform .12s ease,box-shadow .12s ease;
+}
+.btn--sm{font-size:15px;padding:9px 18px;min-height:42px}
+.btn--lg{font-size:19px;padding:15px 30px;min-height:56px}
+.btn:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
+.btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
+
+/* the non-clickable "coming soon" note — becomes a real button
+   when APP_STORE_URL is set in js/main.js */
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;
+  padding:13px 22px;min-height:52px;
+  border:2px dashed rgba(18,48,26,.38);
+  border-radius:999px;
+  color:var(--ink-2);
+  background:rgba(255,255,255,.62);
+}
+
+/* ───────────────────────── nav ───────────────────────── */
+
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(246,250,242,.86);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(18,48,26,.09);
+}
+.nav__in{
+  width:100%;max-width:var(--wrap);margin-inline:auto;
+  padding:10px 20px;
+  display:flex;align-items:center;gap:18px;
+}
+.nav__brand{
+  display:flex;align-items:center;gap:9px;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:21px;
+  text-decoration:none;
+  margin-right:auto;
+}
+.nav__icon{border-radius:9px}
+.nav__links{display:none;gap:26px;font-weight:500;font-size:15.5px}
+.nav__links a{text-decoration:none;color:var(--ink-2)}
+.nav__links a:hover{color:var(--ink)}
+
+@media (min-width:860px){
+  .nav__links{display:flex}
+}
+
+/* ───────────────────────── hero ───────────────────────── */
+
+.hero{position:relative;overflow:hidden;isolation:isolate}
+.hero__sky{
+  position:absolute;inset:0;z-index:-2;
+  background:linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 30%,var(--sky-3) 58%,var(--sky-4) 100%);
+}
+/* on a phone the sun tucks into the top corner so it never sits
+   behind the headline */
+.sun{
+  position:absolute;top:26px;right:-18px;
+  width:82px;height:82px;border-radius:50%;
+  background:#FFEDA3;
+  box-shadow:0 0 0 18px rgba(255,248,216,.55);
+}
+@media (min-width:760px){
+  .sun{top:64px;right:7%;width:108px;height:108px;box-shadow:0 0 0 22px rgba(255,248,216,.55)}
+}
+.sun--sm{width:80px;height:80px;top:50px;box-shadow:0 0 0 16px rgba(255,248,216,.5)}
+
+.hero__in{
+  max-width:var(--wrap);margin-inline:auto;
+  padding:54px 20px 0;
+  text-align:center;
+}
+.hero__title{font-size:clamp(2.45rem,9.5vw,4.6rem)}
+.hero__sub{
+  margin:16px auto 0;max-width:30ch;
+  font-size:clamp(1.05rem,3.6vw,1.3rem);
+  color:var(--ink-2);
+}
+.hero__cta{
+  margin-top:26px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+@media (min-width:620px){
+  .hero__cta{flex-direction:row;justify-content:center;gap:14px}
+}
+
+/* ── the fanned phones ── */
+.fan{
+  margin-top:40px;
+  display:flex;align-items:flex-end;justify-content:center;
+  /* the two back phones tuck behind the front one */
+  gap:0;
+  /* clear band of hillside under the phones, so Rilo has somewhere
+     to stand on a narrow screen */
+  padding-bottom:104px;
+}
+.fan__front{z-index:3;width:min(62vw,268px)}
+.fan__side{z-index:1;width:min(44vw,206px);opacity:.97}
+.fan__side--l{transform:rotate(-8deg) translate(16%,-3%)}
+.fan__side--r{transform:rotate(8deg) translate(-16%,-3%)}
+
+@media (min-width:760px){
+  .fan{padding-bottom:46px}
+  .fan__front{width:300px}
+  .fan__side{width:250px}
+  .fan__side--l{transform:rotate(-9deg) translate(14%,-2%)}
+  .fan__side--r{transform:rotate(9deg) translate(-14%,-2%)}
+}
+
+/* ── hills ──
+   z-index -1 keeps the hills (and Rilo on them) behind the fanned
+   phones, so on a narrow screen he reads as standing behind them
+   instead of sitting on top of one */
+.hills{position:absolute;left:0;right:0;bottom:-1px;pointer-events:none;z-index:-1}
+.hills__svg{display:block;width:100%;height:clamp(140px,16vw,170px)}
+/* peeking over the hills, off to one side so the fanned phones
+   never sit on top of him */
+/* he sits inside .hills and BEFORE the svg, so the hill paths paint
+   over his lower half — he peeks over the ridge */
+.hills__rilo{
+  position:absolute;
+  left:6%;bottom:9%;
+  width:clamp(86px,15vw,132px);
+  filter:drop-shadow(0 6px 10px rgba(18,48,26,.18));
+}
+@media (min-width:760px){
+  .hills__rilo{left:7%;bottom:30%}
+}
+
+/* ───────────────────────── bands ───────────────────────── */
+
+.band{padding:74px 0}
+.band--tint{background:#EDF6E7}
+.band--slim{padding:52px 0}
+
+.head{text-align:center;margin-bottom:46px}
+.head h2{font-size:clamp(1.95rem,6.2vw,2.9rem)}
+
+.label{
+  font-family:Fredoka,sans-serif;
+  font-size:12.5px;font-weight:600;
+  letter-spacing:.13em;text-transform:uppercase;
+  color:var(--green-ink);
+  margin:0 0 10px;
+}
+
+.lede{color:var(--ink-3);margin:12px 0 0;font-size:1.06rem}
+
+/* ── a text/phone split (the "where does your day go" block) ── */
+.split{display:grid;gap:34px;align-items:center}
+.split__text{text-align:center}
+.split__text h2{font-size:clamp(1.95rem,6.2vw,2.9rem)}
+.split__art{display:flex;justify-content:center}
+.split__art .phone{width:min(66vw,262px)}
+
+@media (min-width:860px){
+  .split{grid-template-columns:1fr 1fr;gap:60px}
+  .split__text{text-align:left}
+  .split__art .phone{width:282px}
+}
+
+/* ───────────────────── how it works ───────────────────── */
+
+.steps{
+  list-style:none;margin:0;padding:0;
+  display:grid;gap:52px;
+}
+.step{text-align:center;position:relative}
+.step .phone{width:min(60vw,236px);margin:0 auto 22px}
+.step h3{font-size:1.45rem;margin-bottom:6px}
+.step p{margin:0;color:var(--ink-3)}
+.step__num{
+  width:38px;height:38px;margin:0 auto 18px;
+  display:grid;place-items:center;
+  border-radius:50%;
+  background:var(--ink);color:#fff;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:18px;
+}
+
+@media (min-width:860px){
+  .steps{grid-template-columns:repeat(3,1fr);gap:38px}
+  .step .phone{width:100%;max-width:236px}
+}
+
+/* ───────────────────────── features ───────────────────────── */
+
+.feat{
+  display:grid;gap:30px;align-items:center;
+  padding:40px 0;
+}
+/* min-width:0 — without it a grid item refuses to shrink below its
+   content, and the scrolling skins row stretches the whole page */
+.feat__text{text-align:center;min-width:0}
+.feat__text h3{font-size:clamp(1.7rem,5.4vw,2.35rem);margin-bottom:0}
+.feat__art{display:flex;justify-content:center;min-width:0}
+.feat__art .phone{width:min(62vw,250px)}
+
+@media (min-width:860px){
+  .feat{grid-template-columns:1fr 1fr;gap:64px;padding:54px 0}
+  .feat__text{text-align:left}
+  /* alternating sides, like the reference layouts */
+  .feat--flip .feat__text{order:2}
+  .feat--flip .feat__art{order:1}
+  .feat__art .phone{width:268px}
+  /* the skin ladder reads better as one wide row than squeezed
+     into half a column */
+  .feat--stack{grid-template-columns:1fr;gap:28px}
+  .feat--stack .feat__text{text-align:center;max-width:46ch;margin-inline:auto}
+}
+
+/* ── moods row ── */
+.moods{
+  list-style:none;margin:0;padding:0;
+  display:grid;grid-template-columns:repeat(2,1fr);
+  gap:14px;width:100%;max-width:420px;
+}
+.moods li{
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 4px 0 var(--line);
+  padding:16px 10px 12px;
+  text-align:center;
+}
+.moods img{width:84px;margin:0 auto 6px}
+.moods span{
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:14px;
+  color:var(--ink-2);
+}
+@media (min-width:520px){
+  .moods{grid-template-columns:repeat(4,1fr);max-width:none}
+  .moods img{width:72px}
+}
+
+/* ── skins row (horizontal scroll, ends at samurai 100) ── */
+.feat__art--wide{display:block;width:100%}
+.skins{
+  list-style:none;margin:0;padding:4px 20px 16px;
+  display:flex;gap:14px;
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  /* bleed to the screen edges on a phone so the row reads as scrollable */
+  margin-inline:calc(50% - 50vw);
+  scrollbar-width:thin;
+}
+.skins li{
+  flex:0 0 auto;width:112px;
+  scroll-snap-align:center;
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:18px;
+  box-shadow:0 4px 0 var(--line);
+  padding:12px 8px 10px;
+  text-align:center;
+}
+.skins li.is-max{background:#FFF3C9}
+.skins img{width:72px;margin:0 auto 4px}
+.skins b{
+  display:block;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:13.5px;
+  line-height:1.2;
+}
+.skins small{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
+.skins__hint{
+  margin:0;padding-top:2px;
+  text-align:center;font-size:13px;color:var(--ink-3);
+}
+@media (min-width:860px){
+  .skins{padding-inline:max(20px,calc(50vw - var(--wrap)/2))}
+  .skins__hint{text-align:center}
+}
+
+/* ───────────────────── one day with rilo ───────────────────── */
+
+.day{
+  list-style:none;margin:0 auto;padding:0;
+  max-width:620px;
+  display:grid;gap:14px;
+}
+.note{
+  display:flex;align-items:center;gap:14px;
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 4px 0 var(--line);
+  padding:14px 18px;
+}
+/* a gentle stagger down the timeline, flattened on a phone */
+@media (min-width:620px){
+  .note:nth-child(even){margin-left:42px}
+}
+.note img{width:46px;flex-shrink:0}
+.note time{
+  display:block;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:13px;
+  letter-spacing:.04em;text-transform:uppercase;
+  color:var(--green-ink);
+}
+.note p{margin:2px 0 0;font-size:16px;line-height:1.45}
+
+/* ───────────────────────── pricing ───────────────────────── */
+
+.price{
+  margin:0;text-align:center;
+  font-family:Fredoka,sans-serif;font-weight:500;
+  font-size:clamp(1.15rem,4.2vw,1.6rem);
+  line-height:1.45;
+  color:var(--ink-2);
+  max-width:34ch;margin-inline:auto;
+}
+.price strong{font-weight:600;color:var(--ink)}
+
+/* ───────────────────────── faq ───────────────────────── */
+
+.faq{display:grid;gap:12px}
+.q{
+  background:var(--card);
+  border:2px solid var(--line);
+  border-radius:var(--radius);
+  box-shadow:0 4px 0 var(--line);
+  overflow:hidden;
+}
+.q summary{
+  display:flex;align-items:center;gap:13px;
+  padding:16px 50px 16px 16px;
+  cursor:pointer;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:1.06rem;
+  position:relative;
+  list-style:none;
+}
+.q summary::-webkit-details-marker{display:none}
+.q summary img{width:38px;flex-shrink:0}
+/* the +/− */
+.q summary::after{
+  content:"";
+  position:absolute;right:20px;top:50%;
+  width:14px;height:14px;
+  background:
+    linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) center/2.5px 14px no-repeat;
+  transform:translateY(-50%);
+  transition:transform .2s ease;
+}
+.q[open] summary::after{
+  background:linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat;
+  transform:translateY(-50%) rotate(180deg);
+}
+.q p{margin:0;padding:0 18px 18px 67px;color:var(--ink-3)}
+@media (max-width:520px){
+  .q p{padding-left:18px}
+}
+
+/* ───────────────────────── final cta ───────────────────────── */
+
+.final{position:relative;overflow:hidden;isolation:isolate;padding:80px 0 0}
+.final__sky{
+  position:absolute;inset:0;z-index:-1;
+  background:linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 34%,var(--sky-3) 70%,var(--sky-4) 100%);
+}
+.final__in{text-align:center;padding-bottom:clamp(110px,19vw,190px)}
+.final__rilo{width:clamp(130px,26vw,186px);margin:0 auto 20px}
+.final h2{font-size:clamp(2.1rem,7.4vw,3.4rem);margin-bottom:26px}
+.hills--final{z-index:-1}
+
+/* ───────────────────────── footer ───────────────────────── */
+
+.foot{background:var(--ink);color:#DCE9DE;padding:30px 0}
+.foot__in{
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  text-align:center;font-size:15px;
+}
+.foot p{margin:0}
+.foot a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.foot__c{color:#8FA894;font-size:14px}
+@media (min-width:620px){
+  .foot__in{flex-direction:row;justify-content:space-between}
+}
+
+/* ─────────────── the reusable iPhone mockup ───────────────
+   One component: black bezel, dynamic island, the real
+   screenshot inside, soft shadow. Width is set by whoever
+   uses it; the height follows from the 390x844 aspect.     */
+
+.phone{
+  position:relative;
+  width:100%;
+  aspect-ratio:390/844;
+  background:#0E1510;
+  border-radius:13.5% / 6.3%;
+  padding:2.9%;
+  box-shadow:var(--shadow),0 0 0 1.5px rgba(255,255,255,.22) inset;
+}
+.phone__screen{
+  width:100%;height:100%;
+  border-radius:11.5% / 5.4%;
+  overflow:hidden;
+  background:var(--sky-1);
+}
+.phone__screen img{width:100%;height:100%;object-fit:cover;object-position:top}
+.phone__island{
+  position:absolute;z-index:2;
+  top:2.3%;left:50%;transform:translateX(-50%);
+  width:30%;height:3.1%;
+  background:#0E1510;
+  border-radius:999px;
+}
+.phone--sm{box-shadow:var(--shadow-sm),0 0 0 1.5px rgba(255,255,255,.2) inset}
+
+/* ───────────────────────── motion ───────────────────────── */
+
+.reveal{
+  opacity:0;
+  transform:translateY(22px);
+  transition:opacity .66s ease,transform .66s cubic-bezier(.22,.8,.3,1);
+}
+.reveal.is-in{opacity:1;transform:none}
+
+.float{animation:float 6.5s ease-in-out infinite}
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-12px)}
+}
+
+/* everything above is decoration — switch it all off on request */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .reveal{opacity:1;transform:none;transition:none}
+  .float{animation:none}
+  .btn{transition:none}
+  .q summary::after{transition:none}
+  *,*::before,*::after{
+    animation-duration:.001ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:.001ms !important;
+  }
+}

@@ -1,0 +1,376 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rilo · your screen-time buddy</title>
+<meta name="description" content="rilo blocks the apps you pick, asks why you're opening them, and gives you something better to do. your screen-time buddy for iPhone.">
+<meta name="theme-color" content="#A6DDF0">
+
+<link rel="icon" href="img/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="img/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rilo · your screen-time buddy">
+<meta property="og:description" content="rilo gets you off your phone and gives you something better to do.">
+<meta property="og:image" content="img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Rilo · your screen-time buddy">
+<meta name="twitter:description" content="rilo gets you off your phone and gives you something better to do.">
+<meta name="twitter:image" content="img/og.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">skip to content</a>
+
+<!-- ───────────────────────── nav ───────────────────────── -->
+<header class="nav">
+  <div class="nav__in">
+    <a class="nav__brand" href="#top">
+      <img src="img/favicon.svg" alt="" width="34" height="34" class="nav__icon">
+      <span>rilo</span>
+    </a>
+    <nav class="nav__links" aria-label="sections">
+      <a href="#how">how it works</a>
+      <a href="#features">features</a>
+      <a href="#faq">faq</a>
+    </nav>
+    <a class="btn btn--sm" href="https://tryrilo.vercel.app">try rilo</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ───────────────────────── hero ───────────────────────── -->
+<section class="hero" id="top">
+  <div class="hero__sky" aria-hidden="true">
+    <div class="sun"></div>
+  </div>
+
+  <div class="hero__in">
+    <h1 class="hero__title">your screen-time buddy.</h1>
+    <p class="hero__sub">rilo gets you off your phone and gives you something better to do.</p>
+
+    <div class="hero__cta">
+      <a class="btn btn--lg" href="https://tryrilo.vercel.app">try rilo now</a>
+      <div class="badge" id="app-store-slot">coming soon to iPhone</div>
+    </div>
+
+    <div class="fan" role="group" aria-label="rilo on iPhone">
+      <div class="fan__side fan__side--l reveal">
+        <div class="phone phone--sm">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/home.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="rilo's home screen: today's total, what to do instead, and each app with the opens it has left.">
+          </div>
+        </div>
+      </div>
+
+      <div class="fan__front float">
+        <div class="phone">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/shield.webp" width="780" height="1688" fetchpriority="high" decoding="async"
+                 alt="rilo blocking tiktok: 'tap through and i'll ask what for', with three opens left.">
+          </div>
+        </div>
+      </div>
+
+      <div class="fan__side fan__side--r reveal">
+        <div class="phone phone--sm">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/progress.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="rilo's progress screen: level 2, time saved, and the week so far.">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hills" aria-hidden="true">
+    <img class="hills__rilo" src="img/rilo/original-wave.svg" alt="" width="208" height="182">
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="none" class="hills__svg">
+      <path fill="#A8DCA0" d="M0 96c180-46 340 24 520 22S900 58 1080 60s260 40 360 52v108H0z"/>
+      <path fill="#4CC160" d="M0 136c200-40 360 10 560 16s420-44 620-38 180 28 260 40v66H0z"/>
+      <path fill="#2E8B3E" d="M0 180c240-28 420 12 660 14s460-30 780-18v44H0z"/>
+    </svg>
+  </div>
+</section>
+
+<!-- ─────────────────── where does your day go ─────────────────── -->
+<section class="band">
+  <div class="wrap split">
+    <div class="split__text reveal">
+      <p class="label">your day</p>
+      <h2>where does your day go?</h2>
+      <p class="lede">rilo shows you exactly which apps eat your day.</p>
+    </div>
+    <div class="split__art reveal">
+      <div class="phone">
+        <div class="phone__island" aria-hidden="true"></div>
+        <div class="phone__screen">
+          <img src="img/screens/breakdown.webp" width="780" height="1688" loading="lazy" decoding="async"
+               alt="where your time goes: tiktok 1h 11m at 28%, instagram 50m at 20%, youtube 40m at 16%, snapchat 30m at 12%.">
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── how it works ───────────────────────── -->
+<section class="band band--tint" id="how">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="label">how it works</p>
+      <h2>three steps, that's it.</h2>
+    </div>
+
+    <ol class="steps">
+      <li class="step reveal">
+        <div class="step__num" aria-hidden="true">1</div>
+        <div class="phone phone--sm">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/pickapps.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="picking which apps rilo watches: tiktok, instagram and youtube ticked.">
+          </div>
+        </div>
+        <h3>pick your apps</h3>
+        <p>tell rilo which ones steal your time.</p>
+      </li>
+
+      <li class="step reveal">
+        <div class="step__num" aria-hidden="true">2</div>
+        <div class="phone phone--sm">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/shield.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="rilo stopping an app open and asking what it's for.">
+          </div>
+        </div>
+        <h3>rilo stops you and asks why</h3>
+        <p>"why are you opening this?" — answer it honestly.</p>
+      </li>
+
+      <li class="step reveal">
+        <div class="step__num" aria-hidden="true">3</div>
+        <div class="phone phone--sm">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/plan.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="rilo's plan for the day, with 'shoot 50 free throws' up next.">
+          </div>
+        </div>
+        <h3>do this instead</h3>
+        <p>he points you at one of your own hobbies.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ───────────────────────── features ───────────────────────── -->
+<section class="band" id="features">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="label">features</p>
+      <h2>what rilo actually does.</h2>
+    </div>
+
+    <div class="feat reveal">
+      <div class="feat__text">
+        <p class="label">opens</p>
+        <h3>limits that actually work.</h3>
+        <p class="lede">each app gets a few opens a day. when they're gone, they're gone.</p>
+      </div>
+      <div class="feat__art">
+        <div class="phone">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/home.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="each app on the home screen showing three opens left at ten minutes each.">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat feat--flip reveal">
+      <div class="feat__text">
+        <p class="label">strict mode</p>
+        <h3>for when you're serious.</h3>
+        <p class="lede">can't be turned off on a whim — loosening anything takes 24 hours.</p>
+      </div>
+      <div class="feat__art">
+        <div class="phone">
+          <div class="phone__island" aria-hidden="true"></div>
+          <div class="phone__screen">
+            <img src="img/screens/strict.webp" width="780" height="1688" loading="lazy" decoding="async"
+                 alt="your limits with strict mode on: loosening anything takes 24 hours.">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="feat reveal">
+      <div class="feat__text">
+        <p class="label">moods</p>
+        <h3>rilo has feelings.</h3>
+        <p class="lede">keep bypassing him and you'll see it on his face.</p>
+      </div>
+      <div class="feat__art">
+        <ul class="moods">
+          <li><img src="img/rilo/original-coach.svg" alt="rilo looking encouraging" width="208" height="182" loading="lazy"><span>coach</span></li>
+          <li><img src="img/rilo/original-proud.svg" alt="rilo looking proud" width="208" height="182" loading="lazy"><span>proud</span></li>
+          <li><img src="img/rilo/original-letdown.svg" alt="rilo looking let down" width="208" height="182" loading="lazy"><span>let down</span></li>
+          <li><img src="img/rilo/original-angry.svg" alt="rilo looking angry" width="208" height="182" loading="lazy"><span>angry</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="feat feat--stack reveal">
+      <div class="feat__text">
+        <p class="label">levels</p>
+        <h3>level up by using less.</h3>
+        <p class="lede">every level unlocks a new rilo, all the way to samurai at 100.</p>
+      </div>
+      <div class="feat__art feat__art--wide">
+        <ul class="skins" id="skins"></ul>
+        <p class="skins__hint">scroll the row &rarr;</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────── one day with rilo ───────────────────── -->
+<section class="band band--tint">
+  <div class="wrap">
+    <div class="head reveal">
+      <p class="label">a day</p>
+      <h2>one day with rilo.</h2>
+    </div>
+
+    <ol class="day">
+      <li class="note reveal">
+        <img src="img/rilo/original-coach.svg" alt="" width="208" height="182" loading="lazy">
+        <div><time>7:40 am</time><p>no tiktok before school. you said that, not me.</p></div>
+      </li>
+      <li class="note reveal">
+        <img src="img/rilo/original-curious.svg" alt="" width="208" height="182" loading="lazy">
+        <div><time>4:15 pm</time><p>tiktok locked. 2 opens left.</p></div>
+      </li>
+      <li class="note reveal">
+        <img src="img/rilo/original-proud.svg" alt="" width="208" height="182" loading="lazy">
+        <div><time>4:16 pm</time><p>bored? go shoot free throws.</p></div>
+      </li>
+      <li class="note reveal">
+        <img src="img/rilo/original-letdown.svg" alt="" width="208" height="182" loading="lazy">
+        <div><time>8:02 pm</time><p>that's the third time tonight. i'm just saying.</p></div>
+      </li>
+      <li class="note reveal">
+        <img src="img/rilo/original-sleepy.svg" alt="" width="208" height="182" loading="lazy">
+        <div><time>11:02 pm</time><p>rilo is sleepy. go to bed.</p></div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ───────────────────────── pricing ───────────────────────── -->
+<section class="band band--slim">
+  <div class="wrap">
+    <p class="price reveal">
+      free to start. <strong>rilo pro is $4.99/mo or $39.99/yr</strong>, with a 7-day free trial.
+    </p>
+  </div>
+</section>
+
+<!-- ───────────────────────── faq ───────────────────────── -->
+<section class="band band--tint" id="faq">
+  <div class="wrap wrap--narrow">
+    <div class="head reveal">
+      <p class="label">faq</p>
+      <h2>the usual questions.</h2>
+    </div>
+
+    <div class="faq">
+      <details class="q reveal">
+        <summary>
+          <img src="img/rilo/original-curious.svg" alt="" width="208" height="182" loading="lazy">
+          <span>does rilo really block apps?</span>
+        </summary>
+        <p>on iPhone he uses apple's screen time tools, so the block is real. the web demo just shows you how it works.</p>
+      </details>
+
+      <details class="q reveal">
+        <summary>
+          <img src="img/rilo/original-coach.svg" alt="" width="208" height="182" loading="lazy">
+          <span>is rilo listening to me?</span>
+        </summary>
+        <p>no. rilo only listens while you hold the talk button.</p>
+      </details>
+
+      <details class="q reveal">
+        <summary>
+          <img src="img/rilo/original-wave.svg" alt="" width="208" height="182" loading="lazy">
+          <span>who is it for?</span>
+        </summary>
+        <p>anyone 13+ who wants their time back.</p>
+      </details>
+
+      <details class="q reveal">
+        <summary>
+          <img src="img/rilo/original-proud.svg" alt="" width="208" height="182" loading="lazy">
+          <span>is it free?</span>
+        </summary>
+        <p>yes to start. pro adds strict mode, the 30-day plan, ai rilo, and all the skins.</p>
+      </details>
+
+      <details class="q reveal">
+        <summary>
+          <img src="img/rilo/original-sleepy.svg" alt="" width="208" height="182" loading="lazy">
+          <span>when is it on the app store?</span>
+        </summary>
+        <p>soon. try the demo now.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── final cta ───────────────────────── -->
+<section class="final">
+  <div class="final__sky" aria-hidden="true"><div class="sun sun--sm"></div></div>
+  <div class="wrap final__in">
+    <img class="final__rilo reveal" src="img/rilo/original-proud.svg" alt="rilo, cheering you on" width="208" height="182" loading="lazy">
+    <h2 class="reveal">get your time back.</h2>
+    <a class="btn btn--lg reveal" href="https://tryrilo.vercel.app">try rilo now</a>
+  </div>
+  <div class="hills hills--final" aria-hidden="true">
+    <svg viewBox="0 0 1440 220" preserveAspectRatio="none" class="hills__svg">
+      <path fill="#A8DCA0" d="M0 96c180-46 340 24 520 22S900 58 1080 60s260 40 360 52v108H0z"/>
+      <path fill="#4CC160" d="M0 136c200-40 360 10 560 16s420-44 620-38 180 28 260 40v66H0z"/>
+      <path fill="#2E8B3E" d="M0 180c240-28 420 12 660 14s460-30 780-18v44H0z"/>
+    </svg>
+  </div>
+</section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <p>made by Ethan Dunn</p>
+    <p><a href="https://instagram.com/ethandunnofficial">instagram</a></p>
+    <p class="foot__c">© 2026 Rilo</p>
+  </div>
+</footer>
+
+<script src="js/main.js"></script>
+</body>
+</html>
