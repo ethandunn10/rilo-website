@@ -1,7 +1,9 @@
 /* ───────────────────────────────────────────────────────────
    Rilo — marketing site
-   Palette lifted from the app itself (lib/themes.js "grass"
-   + index.css), so the site and the app look like one thing.
+   One fixed "world" behind the page wears Rilo's app themes
+   (lib/themes.js: grass, bamboo, sakura, sunset, snow). Each
+   full-screen scene picks a theme; the world crossfades to it
+   and the scene's content fades in.
    ─────────────────────────────────────────────────────────── */
 
 :root{
@@ -10,48 +12,33 @@
   --ink-3:#3D5A46;
   --card:#FFFBF1;
   --line:#12301A;
-
-  --green:#2E8B3E;
-  --green-lt:#4CC160;
-  --green-pale:#A8DCA0;
-  /* Rilo's green is a shade too light for small text on the cream
-     and tinted backgrounds — this one clears 4.5:1 on both */
   --green-ink:#246E31;
 
-  --sky-1:#A6DDF0;
-  --sky-2:#CDEDF0;
-  --sky-3:#EAF6E6;
-  --sky-4:#EEF8E6;
-
-  --page:#F6FAF2;
   --radius:22px;
   --wrap:1120px;
+  --hills:clamp(104px,13vw,168px);
 
-  --shadow:0 18px 40px rgba(18,48,26,.16);
-  --shadow-sm:0 8px 20px rgba(18,48,26,.10);
+  --shadow:0 22px 44px rgba(18,48,26,.22);
+  --ease:cubic-bezier(.22,.8,.3,1);
 }
 
 *,*::before,*::after{box-sizing:border-box}
-
-/* an author-set display (flex/grid) otherwise beats the hidden
-   attribute, which is how a hidden form stays on screen */
 [hidden]{display:none !important}
 
 html{
   scroll-behavior:smooth;
-  /* the sticky nav shouldn't sit on top of the thing you jumped to */
-  scroll-padding-top:80px;
+  scroll-padding-top:70px;
   -webkit-text-size-adjust:100%;
 }
 
 body{
   margin:0;
-  background:var(--page);
+  /* the world paints the real background; this is only the fallback */
+  background:#EEF8E6;
   color:var(--ink);
   font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
   font-size:17px;
   line-height:1.6;
-  /* most visitors arrive from instagram on a phone — nothing may spill sideways */
   overflow-x:hidden;
 }
 
@@ -63,12 +50,11 @@ h1,h2,h3{
   margin:0;
   text-wrap:balance;
 }
+h2{font-size:clamp(2rem,6.4vw,3.1rem)}
 
 img{max-width:100%;height:auto;display:block}
 a{color:inherit}
 
-/* parked above the viewport rather than off to the left, which
-   would widen the page */
 .skip-link{
   position:absolute;left:0;top:-80px;z-index:200;
   background:var(--ink);color:#fff;padding:12px 18px;border-radius:0 0 12px 0;
@@ -76,20 +62,21 @@ a{color:inherit}
 }
 .skip-link:focus{top:0}
 
-:focus-visible{
-  outline:3px solid var(--ink);
-  outline-offset:3px;
-  border-radius:6px;
-}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
 
 .wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:20px}
-.wrap--narrow{max-width:760px}
+.wrap--narrow{max-width:700px}
+.center{text-align:center}
+
+.sr-only{
+  position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+  clip:rect(0 0 0 0);white-space:nowrap;border:0;
+}
 
 /* ───────────────────────── buttons ───────────────────────── */
 
 .btn{
-  display:inline-flex;align-items:center;justify-content:center;
-  gap:8px;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
   font-family:Fredoka,sans-serif;font-weight:600;
   text-decoration:none;
   background:var(--ink);color:#fff;
@@ -97,35 +84,22 @@ a{color:inherit}
   border-radius:999px;
   box-shadow:0 4px 0 var(--line);
   transition:transform .12s ease,box-shadow .12s ease;
+  cursor:pointer;
 }
 .btn--sm{font-size:15px;padding:9px 18px;min-height:42px}
-.btn--lg{font-size:19px;padding:15px 30px;min-height:56px}
+.btn--lg{font-size:19px;padding:14px 28px;min-height:56px}
 .btn:hover{transform:translateY(2px);box-shadow:0 2px 0 var(--line)}
 .btn:active{transform:translateY(4px);box-shadow:0 0 0 var(--line)}
-
-/* the hero's secondary action — "try rilo now" stays the loud one */
 .btn--ghost{background:var(--card);color:var(--ink)}
-
-/* the non-clickable "coming soon" note — becomes a real button
-   when APP_STORE_URL is set in js/main.js */
-.badge{
-  display:inline-flex;align-items:center;gap:8px;
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:15px;
-  padding:13px 22px;min-height:52px;
-  border:2px dashed rgba(18,48,26,.38);
-  border-radius:999px;
-  color:var(--ink-2);
-  background:rgba(255,255,255,.62);
-}
 
 /* ───────────────────────── nav ───────────────────────── */
 
 .nav{
-  position:sticky;top:0;z-index:100;
-  background:rgba(246,250,242,.86);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(18,48,26,.09);
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,253,246,.55);
+  backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+  border-bottom:1px solid rgba(18,48,26,.08);
 }
 .nav__in{
   width:100%;max-width:var(--wrap);margin-inline:auto;
@@ -135,108 +109,116 @@ a{color:inherit}
 .nav__brand{
   display:flex;align-items:center;gap:9px;
   font-family:Fredoka,sans-serif;font-weight:600;font-size:21px;
-  text-decoration:none;
-  margin-right:auto;
+  text-decoration:none;margin-right:auto;
 }
 .nav__icon{border-radius:9px}
 .nav__links{display:none;gap:26px;font-weight:500;font-size:15.5px}
 .nav__links a{text-decoration:none;color:var(--ink-2)}
 .nav__links a:hover{color:var(--ink)}
+@media (min-width:860px){.nav__links{display:flex}}
 
-@media (min-width:860px){
-  .nav__links{display:flex}
-}
-
-/* ───────────────────────── hero ───────────────────────── */
-
-.hero{position:relative;overflow:hidden;isolation:isolate}
-.hero__sky{
-  position:absolute;inset:0;z-index:-2;
-  background:linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 30%,var(--sky-3) 58%,var(--sky-4) 100%);
-}
-/* on a phone the sun tucks into the top corner so it never sits
-   behind the headline */
-.sun{
-  position:absolute;top:26px;right:-18px;
-  width:82px;height:82px;border-radius:50%;
-  background:#FFEDA3;
-  box-shadow:0 0 0 18px rgba(255,248,216,.55);
-}
-@media (min-width:760px){
-  .sun{top:64px;right:7%;width:108px;height:108px;box-shadow:0 0 0 22px rgba(255,248,216,.55)}
-}
-.sun--sm{width:80px;height:80px;top:50px;box-shadow:0 0 0 16px rgba(255,248,216,.5)}
-
-.hero__in{
-  max-width:var(--wrap);margin-inline:auto;
-  padding:54px 20px 0;
-  text-align:center;
-}
-.hero__title{font-size:clamp(2.45rem,9.5vw,4.6rem)}
-.hero__sub{
-  margin:16px auto 0;max-width:30ch;
-  font-size:clamp(1.05rem,3.6vw,1.3rem);
-  color:var(--ink-2);
-}
-.hero__cta{
-  margin-top:26px;
-  display:flex;flex-direction:column;align-items:center;gap:12px;
-}
-@media (min-width:620px){
-  .hero__cta{flex-direction:row;justify-content:center;gap:14px}
+/* the scene dots down the right edge */
+.dots{display:none}
+@media (min-width:1000px){
+  .dots{
+    position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:90;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .dots a{
+    display:block;width:11px;height:11px;border-radius:50%;
+    border:2px solid var(--ink);background:transparent;
+    transition:background .3s ease,transform .3s var(--ease);
+  }
+  .dots a.is-on{background:var(--ink);transform:scale(1.25)}
+  .dots a:hover{background:rgba(18,48,26,.35)}
 }
 
-/* ── the fanned phones ── */
-.fan{
-  margin-top:40px;
-  display:flex;align-items:flex-end;justify-content:center;
-  /* the two back phones tuck behind the front one */
-  gap:0;
-  /* clear band of hillside under the phones, so Rilo has somewhere
-     to stand on a narrow screen */
-  padding-bottom:104px;
-}
-.fan__front{z-index:3;width:min(62vw,268px)}
-.fan__side{z-index:1;width:min(44vw,206px);opacity:.97}
-.fan__side--l{transform:rotate(-8deg) translate(16%,-3%)}
-.fan__side--r{transform:rotate(8deg) translate(-16%,-3%)}
+/* ───────────────────────── the world ───────────────────────── */
 
-@media (min-width:760px){
-  .fan{padding-bottom:46px}
-  .fan__front{width:300px}
-  .fan__side{width:250px}
-  .fan__side--l{transform:rotate(-9deg) translate(14%,-2%)}
-  .fan__side--r{transform:rotate(9deg) translate(-14%,-2%)}
+.world{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+
+.sky{
+  position:absolute;inset:0;
+  opacity:0;
+  transition:opacity 1.2s ease;
+}
+.sky.is-on{opacity:1}
+/* decor in a hidden theme doesn't need to keep moving */
+.sky:not(.is-on) *{animation-play-state:paused !important}
+
+.sky[data-theme="grass"] {background:linear-gradient(180deg,#A6DDF0 0%,#CDEDF0 30%,#EAF6E6 58%,#EEF8E6 100%)}
+.sky[data-theme="bamboo"]{background:linear-gradient(180deg,#FFD7A3 0%,#FFE8C4 26%,#F8F1D9 54%,#EAF5E2 100%)}
+.sky[data-theme="sakura"]{background:linear-gradient(180deg,#FFD3E0 0%,#FFE6EE 30%,#FFF4F2 58%,#F1F7EA 100%)}
+.sky[data-theme="sunset"]{background:linear-gradient(180deg,#FFB08A 0%,#FFCBA4 28%,#FFE3C8 52%,#F3E9DA 100%)}
+.sky[data-theme="snow"]  {background:linear-gradient(180deg,#C9E6FA 0%,#E0F0FB 34%,#F2F8FC 62%,#F6FAFD 100%)}
+
+/* each theme's things drift in slightly as it arrives */
+.sky .deco{transform:scale(1.04);transition:transform 1.6s var(--ease)}
+.sky.is-on .deco{transform:none}
+
+.w-sun{
+  position:absolute;border-radius:50%;
+  width:var(--s);height:var(--s);
+  background:var(--core);
+  box-shadow:0 0 0 calc(var(--s) * .28) var(--glow);
+  animation:sun-glow 6s ease-in-out infinite;
+}
+/* on a phone the high suns tuck into the corner, clear of the headlines */
+@media (max-width:759px){
+  .w-sun--top{scale:.7;translate:40% -40%}
+  .w-sun--top[style*="left"]{translate:-40% -40%}
 }
 
-/* ── hills ──
-   z-index -1 keeps the hills (and Rilo on them) behind the fanned
-   phones, so on a narrow screen he reads as standing behind them
-   instead of sitting on top of one */
-.hills{position:absolute;left:0;right:0;bottom:-1px;pointer-events:none;z-index:-1}
-.hills__svg{display:block;width:100%;height:clamp(140px,16vw,170px)}
-/* peeking over the hills, off to one side so the fanned phones
-   never sit on top of him */
-/* he sits inside .hills and BEFORE the svg, so the hill paths paint
-   over his lower half — he peeks over the ridge */
-.hills__rilo{
-  position:absolute;
-  left:6%;bottom:9%;
-  width:clamp(86px,15vw,132px);
+.w-hills{position:absolute;left:0;right:0;bottom:-1px;height:var(--hills)}
+.w-hills svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.w-rilo{
+  position:absolute;left:5%;bottom:46%;
+  width:clamp(64px,8vw,112px);
   filter:drop-shadow(0 6px 10px rgba(18,48,26,.18));
 }
-@media (min-width:760px){
-  .hills__rilo{left:7%;bottom:30%}
+
+.w-bamboo{position:absolute;bottom:0;width:60px;height:auto;transform-origin:50% 100%}
+.w-sway{animation:bamboo-sway var(--d,7s) ease-in-out infinite;transform-origin:50% 100%}
+
+.w-branch{
+  position:absolute;top:56px;right:-6px;
+  width:clamp(220px,32vw,420px);
+  transform:scaleX(-1);
 }
+.w-branch svg{display:block;width:100%;height:auto}
 
-/* ───────────────────────── bands ───────────────────────── */
+.w-birds{position:absolute;top:16%;left:8%;width:clamp(160px,20vw,280px)}
+@media (max-width:759px){.w-birds{top:auto;bottom:calc(var(--hills) + 34%);left:2%;width:130px}}
 
-.band{padding:74px 0}
-.band--tint{background:#EDF6E7}
-.band--slim{padding:52px 0}
+.w-fall{
+  position:absolute;top:0;
+  animation:leaf-fall var(--d,13s) linear var(--delay,0s) infinite both;
+}
+.w-fly{position:absolute;animation:butterfly var(--d,14s) ease-in-out var(--delay,0s) infinite}
+.w-fly svg g{transform-origin:11px 8px;animation:flap .35s ease-in-out infinite alternate}
 
-.head{text-align:center;margin-bottom:46px}
-.head h2{font-size:clamp(1.95rem,6.2vw,2.9rem)}
+/* ───────────────────────── scenes ───────────────────────── */
+
+.scene{
+  position:relative;
+  min-height:100vh;min-height:100svh;
+  display:flex;align-items:center;
+  padding:92px 0 calc(var(--hills) + 24px);
+}
+.scene > .wrap{width:100%}
+
+/* the fade: everything marked .fx slides up into place when its scene
+   arrives, staggered by --i, and fades back out when the scene leaves */
+.fx{
+  opacity:0;
+  transform:translateY(28px);
+  transition:
+    opacity .8s ease calc(var(--i,0) * 90ms),
+    transform .9s var(--ease) calc(var(--i,0) * 90ms);
+}
+.scene.is-in .fx{opacity:1;transform:none}
+/* leaving is quicker and unstaggered so it never lags behind the scroll */
+.scene:not(.is-in) .fx{transition-duration:.45s;transition-delay:0s}
 
 .label{
   font-family:Fredoka,sans-serif;
@@ -245,231 +227,212 @@ a{color:inherit}
   color:var(--green-ink);
   margin:0 0 10px;
 }
+.lede{color:var(--ink-3);margin:14px 0 0;font-size:1.08rem}
 
-.lede{color:var(--ink-3);margin:12px 0 0;font-size:1.06rem}
+/* ─────────────── the iPhone mockup ───────────────
+   The screen is exactly the screenshot's shape (780×1688), so nothing
+   is cropped; the bezel is an even border around it. That makes the
+   whole phone ~2.08:1, the shape of a real iPhone 15/16. */
 
-/* ── a text/phone split (the "where does your day go" block) ── */
-.split{display:grid;gap:34px;align-items:center}
-.split__text{text-align:center}
-.split__text h2{font-size:clamp(1.95rem,6.2vw,2.9rem)}
+.phone{
+  position:relative;
+  width:100%;
+  padding:3.4%;
+  background:#0E1510;
+  border-radius:16% / 7.7%;
+  box-shadow:var(--shadow),0 0 0 1.5px rgba(255,255,255,.22) inset;
+}
+.phone__screen{
+  position:relative;
+  aspect-ratio:780/1688;
+  border-radius:13.5% / 6.25%;
+  overflow:hidden;
+  background:#A6DDF0;
+  /* keeps the rounded clip on Safari while children animate */
+  isolation:isolate;
+}
+.phone__screen img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;
+}
+.phone__island{
+  position:absolute;z-index:2;
+  top:2.9%;left:50%;transform:translateX(-50%);
+  width:27%;aspect-ratio:3.4/1;
+  background:#0E1510;
+  border-radius:999px;
+}
+
+/* screens that crossfade inside one phone */
+.scr{opacity:0;transform:scale(1.03);transition:opacity .7s ease,transform 1.2s var(--ease)}
+.scr.is-on{opacity:1;transform:none}
+
+/* ───────────────────────── 1 · hero ───────────────────────── */
+
+.scene--hero{padding-top:96px}
+.hero{text-align:center}
+.hero__title{font-size:clamp(2.4rem,9vw,4.4rem)}
+.hero__sub{
+  margin:14px auto 0;max-width:30ch;
+  font-size:clamp(1.05rem,3.6vw,1.28rem);
+  color:var(--ink-2);
+}
+.hero__cta{
+  margin-top:24px;
+  display:flex;flex-direction:column;align-items:center;gap:12px;
+}
+@media (min-width:620px){.hero__cta{flex-direction:row;justify-content:center;gap:14px}}
+
+.fan{
+  margin-top:34px;
+  display:flex;align-items:flex-end;justify-content:center;
+}
+.fan__front{z-index:3;width:min(40vw,200px)}
+.fan__side{z-index:1;width:min(29vw,160px)}
+.fan__side--l{margin-right:-9%}
+.fan__side--r{margin-left:-9%}
+.fan__side--l .phone{transform:rotate(-8deg)}
+.fan__side--r .phone{transform:rotate(8deg)}
+@media (min-width:760px){
+  .fan__front{width:230px}
+  .fan__side{width:185px}
+  .fan__side--l{margin-right:-30px}
+  .fan__side--r{margin-left:-30px}
+}
+
+/* ───────────────────── split scenes ───────────────────── */
+
+.split{display:grid;gap:30px;align-items:center}
+.split__text{text-align:center;min-width:0}
 .split__art{display:flex;justify-content:center}
-.split__art .phone{width:min(66vw,262px)}
+.split__art .phone{width:min(48vw,205px)}
 
 @media (min-width:860px){
-  .split{grid-template-columns:1fr 1fr;gap:60px}
+  .split{grid-template-columns:1.1fr 1fr;gap:64px}
   .split__text{text-align:left}
-  .split__art .phone{width:282px}
+  .split--flip .split__text{order:2}
+  .split--flip .split__art{order:1}
+  .split__art .phone{width:245px}
+}
+/* short screens (landscape laptops): keep the phone inside the view */
+@media (min-width:860px) and (max-height:760px){
+  .split__art .phone{width:210px}
 }
 
-/* ───────────────────── how it works ───────────────────── */
-
-.steps{
-  list-style:none;margin:0;padding:0;
-  display:grid;gap:52px;
+/* ── the step / feature tabs that drive the phone ── */
+.tabs{
+  list-style:none;margin:26px 0 0;padding:0;
+  display:grid;gap:10px;
+  text-align:left;
 }
-.step{text-align:center;position:relative}
-.step .phone{width:min(60vw,236px);margin:0 auto 22px}
-.step h3{font-size:1.45rem;margin-bottom:6px}
-.step p{margin:0;color:var(--ink-3)}
-.step__num{
-  width:38px;height:38px;margin:0 auto 18px;
+.tab{
+  position:relative;overflow:hidden;
+  width:100%;
+  display:flex;align-items:flex-start;gap:14px;
+  padding:14px 16px;
+  font:inherit;color:inherit;text-align:left;
+  background:rgba(255,251,241,.55);
+  border:2px solid transparent;
+  border-radius:18px;
+  cursor:pointer;
+  transition:background .35s ease,border-color .35s ease,box-shadow .35s ease;
+}
+.tab:hover{background:rgba(255,251,241,.8)}
+.tab.is-on{
+  background:var(--card);
+  border-color:var(--line);
+  box-shadow:0 4px 0 var(--line);
+}
+.tab__num{
+  flex:0 0 auto;
+  width:32px;height:32px;
   display:grid;place-items:center;
   border-radius:50%;
-  background:var(--ink);color:#fff;
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:18px;
+  background:rgba(18,48,26,.12);color:var(--ink);
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:16px;
+  transition:background .35s ease,color .35s ease;
 }
-
-@media (min-width:860px){
-  .steps{grid-template-columns:repeat(3,1fr);gap:38px}
-  .step .phone{width:100%;max-width:236px}
+.tab.is-on .tab__num{background:var(--ink);color:#fff}
+.tab__body{display:block;min-width:0}
+.tab__body b{
+  display:block;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:1.15rem;line-height:1.25;
+  padding-top:3px;
 }
-
-/* ───────────────────────── features ───────────────────────── */
-
-.feat{
-  display:grid;gap:30px;align-items:center;
-  padding:40px 0;
+/* the description only opens on the active tab, which keeps the scene short */
+.tab__body > span{
+  display:block;
+  max-height:0;overflow:hidden;opacity:0;
+  color:var(--ink-3);font-size:15.5px;line-height:1.45;
+  transition:max-height .5s var(--ease),opacity .35s ease,margin .5s var(--ease);
 }
-/* min-width:0 — without it a grid item refuses to shrink below its
-   content, and the scrolling skins row stretches the whole page */
-.feat__text{text-align:center;min-width:0}
-.feat__text h3{font-size:clamp(1.7rem,5.4vw,2.35rem);margin-bottom:0}
-.feat__art{display:flex;justify-content:center;min-width:0}
-.feat__art .phone{width:min(62vw,250px)}
+.tab.is-on .tab__body > span{max-height:5em;opacity:1;margin-top:4px}
 
-@media (min-width:860px){
-  .feat{grid-template-columns:1fr 1fr;gap:64px;padding:54px 0}
-  .feat__text{text-align:left}
-  /* alternating sides, like the reference layouts */
-  .feat--flip .feat__text{order:2}
-  .feat--flip .feat__art{order:1}
-  .feat__art .phone{width:268px}
-  /* the skin ladder reads better as one wide row than squeezed
-     into half a column */
-  .feat--stack{grid-template-columns:1fr;gap:28px}
-  .feat--stack .feat__text{text-align:center;max-width:46ch;margin-inline:auto}
+/* the progress line along the bottom of the active tab */
+.tab::after{
+  content:"";
+  position:absolute;left:0;bottom:0;height:3px;width:100%;
+  background:var(--green-ink);
+  transform:scaleX(0);transform-origin:left;
 }
+.tab.is-timing::after{animation:tab-fill var(--cycle,4s) linear forwards}
+@keyframes tab-fill{to{transform:scaleX(1)}}
 
-/* ── moods row ── */
+/* ───────────────────── 5 · moods + levels ───────────────────── */
+
 .moods{
-  list-style:none;margin:0;padding:0;
-  display:grid;grid-template-columns:repeat(2,1fr);
-  gap:14px;width:100%;max-width:420px;
+  list-style:none;margin:26px auto 0;padding:0;
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:10px;max-width:560px;
 }
 .moods li{
   background:var(--card);
   border:2px solid var(--line);
-  border-radius:var(--radius);
+  border-radius:18px;
   box-shadow:0 4px 0 var(--line);
-  padding:16px 10px 12px;
-  text-align:center;
+  padding:10px 4px 8px;
 }
-.moods img{width:84px;margin:0 auto 6px}
-.moods span{
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:14px;
-  color:var(--ink-2);
-}
-@media (min-width:520px){
-  .moods{grid-template-columns:repeat(4,1fr);max-width:none}
-  .moods img{width:72px}
-}
+.moods img{width:min(16vw,76px);margin:0 auto 4px}
+.moods span{font-family:Fredoka,sans-serif;font-weight:600;font-size:13.5px;color:var(--ink-2)}
 
-/* ── skins row (horizontal scroll, ends at samurai 100) ── */
-.feat__art--wide{display:block;width:100%}
+.sub-h{font-size:clamp(1.5rem,4.6vw,2.1rem);margin-top:44px}
+
 .skins{
-  list-style:none;margin:0;padding:4px 20px 16px;
-  display:flex;gap:14px;
+  list-style:none;margin:20px calc(50% - 50vw) 0;padding:6px 20px 14px;
+  display:flex;gap:12px;
   overflow-x:auto;
-  scroll-snap-type:x mandatory;
+  scroll-snap-type:x proximity;
   -webkit-overflow-scrolling:touch;
-  /* bleed to the screen edges on a phone so the row reads as scrollable */
-  margin-inline:calc(50% - 50vw);
-  scrollbar-width:thin;
+  scrollbar-width:none;
 }
+.skins::-webkit-scrollbar{display:none}
 .skins li{
-  flex:0 0 auto;width:112px;
+  flex:0 0 auto;width:104px;
   scroll-snap-align:center;
   background:var(--card);
   border:2px solid var(--line);
   border-radius:18px;
   box-shadow:0 4px 0 var(--line);
-  padding:12px 8px 10px;
-  text-align:center;
+  padding:10px 6px 8px;
 }
 .skins li.is-max{background:#FFF3C9}
-.skins img{width:72px;margin:0 auto 4px}
-.skins b{
-  display:block;
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:13.5px;
-  line-height:1.2;
-}
+.skins img{width:66px;margin:0 auto 4px}
+.skins b{display:block;font-family:Fredoka,sans-serif;font-weight:600;font-size:13px;line-height:1.2}
 .skins small{display:block;font-size:12px;color:var(--ink-3);margin-top:2px}
-.skins__hint{
-  margin:0;padding-top:2px;
-  text-align:center;font-size:13px;color:var(--ink-3);
-}
 @media (min-width:860px){
   .skins{padding-inline:max(20px,calc(50vw - var(--wrap)/2))}
-  .skins__hint{text-align:center}
 }
 
-/* ───────────────────── one day with rilo ───────────────────── */
+/* ───────────────────── 6 · waitlist + faq ───────────────────── */
 
-.day{
-  list-style:none;margin:0 auto;padding:0;
-  max-width:620px;
-  display:grid;gap:14px;
-}
-.note{
-  display:flex;align-items:center;gap:14px;
-  background:var(--card);
-  border:2px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:0 4px 0 var(--line);
-  padding:14px 18px;
-}
-/* a gentle stagger down the timeline, flattened on a phone */
-@media (min-width:620px){
-  .note:nth-child(even){margin-left:42px}
-}
-.note img{width:46px;flex-shrink:0}
-.note time{
-  display:block;
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:13px;
-  letter-spacing:.04em;text-transform:uppercase;
-  color:var(--green-ink);
-}
-.note p{margin:2px 0 0;font-size:16px;line-height:1.45}
-
-/* ───────────────────────── pricing ───────────────────────── */
-
-.price{
-  margin:0;text-align:center;
-  font-family:Fredoka,sans-serif;font-weight:500;
-  font-size:clamp(1.15rem,4.2vw,1.6rem);
-  line-height:1.45;
-  color:var(--ink-2);
-  max-width:34ch;margin-inline:auto;
-}
-.price strong{font-weight:600;color:var(--ink)}
-
-/* ───────────────────────── faq ───────────────────────── */
-
-.faq{display:grid;gap:12px}
-.q{
-  background:var(--card);
-  border:2px solid var(--line);
-  border-radius:var(--radius);
-  box-shadow:0 4px 0 var(--line);
-  overflow:hidden;
-}
-.q summary{
-  display:flex;align-items:center;gap:13px;
-  padding:16px 50px 16px 16px;
-  cursor:pointer;
-  font-family:Fredoka,sans-serif;font-weight:600;font-size:1.06rem;
-  position:relative;
-  list-style:none;
-}
-.q summary::-webkit-details-marker{display:none}
-.q summary img{width:38px;flex-shrink:0}
-/* the +/− */
-.q summary::after{
-  content:"";
-  position:absolute;right:20px;top:50%;
-  width:14px;height:14px;
-  background:
-    linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat,
-    linear-gradient(var(--ink),var(--ink)) center/2.5px 14px no-repeat;
-  transform:translateY(-50%);
-  transition:transform .2s ease;
-}
-.q[open] summary::after{
-  background:linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat;
-  transform:translateY(-50%) rotate(180deg);
-}
-.q p{margin:0;padding:0 18px 18px 67px;color:var(--ink-3)}
-@media (max-width:520px){
-  .q p{padding-left:18px}
-}
-
-/* ───────────────────────── waitlist ───────────────────────── */
-
-.sr-only{
-  position:absolute;width:1px;height:1px;
-  padding:0;margin:-1px;overflow:hidden;
-  clip:rect(0 0 0 0);white-space:nowrap;border:0;
-}
-
-/* the FAQ above is tinted, so the waitlist takes the page colour to
-   stay a distinct block rather than merging into it */
-.wait{background:var(--page)}
-.head--tight{margin-bottom:28px}
-.head--tight .lede{margin-inline:auto;max-width:36ch}
+.scene--end{align-items:flex-start;padding-top:110px}
+.end__rilo{width:clamp(110px,22vw,150px);margin:0 auto 14px}
+.wait .lede{max-width:40ch;margin-inline:auto}
 
 .wait__form{
   display:flex;flex-direction:column;gap:12px;
-  max-width:540px;margin:0 auto;
+  max-width:540px;margin:22px auto 0;
 }
 .wait__form input{
   flex:1 1 auto;min-width:0;
@@ -484,105 +447,99 @@ a{color:inherit}
 .wait__form input::placeholder{color:#7D9185}
 .wait__form input[aria-invalid="true"]{border-color:#B3261E}
 .wait__form .btn{flex:0 0 auto}
+@media (min-width:620px){.wait__form{flex-direction:row;align-items:stretch}}
 
-@media (min-width:620px){
-  .wait__form{flex-direction:row;align-items:stretch}
-}
-
-.wait__error{
-  margin:14px auto 0;max-width:540px;
-  text-align:center;font-size:15px;font-weight:500;
-  color:#8C1D18;
-}
-
-.wait__done{
-  max-width:540px;margin:0 auto;text-align:center;
-}
-.wait__done img{width:132px;margin:0 auto 10px}
+.wait__error{margin:14px auto 0;max-width:540px;font-size:15px;font-weight:500;color:#8C1D18}
 .wait__done p{
-  margin:0;
+  margin:22px 0 0;
   font-family:Fredoka,sans-serif;font-weight:600;
   font-size:clamp(1.2rem,4.4vw,1.5rem);
 }
 
-/* ───────────────────────── final cta ───────────────────────── */
+.end__try{margin:18px 0 0}
 
-.final{position:relative;overflow:hidden;isolation:isolate;padding:80px 0 0}
-.final__sky{
-  position:absolute;inset:0;z-index:-1;
-  background:linear-gradient(180deg,var(--sky-1) 0%,var(--sky-2) 34%,var(--sky-3) 70%,var(--sky-4) 100%);
+.price{
+  margin:30px auto 0;max-width:36ch;
+  font-family:Fredoka,sans-serif;font-weight:500;
+  font-size:clamp(1.05rem,3.6vw,1.3rem);
+  line-height:1.45;color:var(--ink-2);
 }
-.final__in{text-align:center;padding-bottom:clamp(110px,19vw,190px)}
-.final__rilo{width:clamp(130px,26vw,186px);margin:0 auto 20px}
-.final h2{font-size:clamp(2.1rem,7.4vw,3.4rem);margin-bottom:26px}
-.hills--final{z-index:-1}
+.price strong{font-weight:600;color:var(--ink)}
+
+.faq{display:grid;gap:10px;margin-top:30px;text-align:left}
+.q{
+  background:rgba(255,251,241,.9);
+  border:2px solid var(--line);
+  border-radius:18px;
+  overflow:hidden;
+}
+.q summary{
+  padding:14px 50px 14px 18px;
+  cursor:pointer;
+  font-family:Fredoka,sans-serif;font-weight:600;font-size:1.04rem;
+  position:relative;list-style:none;
+}
+.q summary::-webkit-details-marker{display:none}
+.q summary::after{
+  content:"";
+  position:absolute;right:20px;top:50%;
+  width:14px;height:14px;
+  background:
+    linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat,
+    linear-gradient(var(--ink),var(--ink)) center/2.5px 14px no-repeat;
+  transform:translateY(-50%);
+  transition:transform .25s ease;
+}
+.q[open] summary::after{
+  background:linear-gradient(var(--ink),var(--ink)) center/14px 2.5px no-repeat;
+  transform:translateY(-50%) rotate(180deg);
+}
+.q p{margin:0;padding:0 18px 16px;color:var(--ink-3)}
 
 /* ───────────────────────── footer ───────────────────────── */
 
-.foot{background:var(--ink);color:#DCE9DE;padding:30px 0}
-.foot__in{
-  display:flex;flex-direction:column;align-items:center;gap:7px;
-  text-align:center;font-size:15px;
-}
+.foot{position:relative;background:var(--ink);color:#DCE9DE;padding:28px 0}
+.foot__in{display:flex;flex-direction:column;align-items:center;gap:7px;text-align:center;font-size:15px}
 .foot p{margin:0}
 .foot a{color:#fff;text-decoration:underline;text-underline-offset:3px}
 .foot__c{color:#8FA894;font-size:14px}
-@media (min-width:620px){
-  .foot__in{flex-direction:row;justify-content:space-between}
-}
-
-/* ─────────────── the reusable iPhone mockup ───────────────
-   One component: black bezel, dynamic island, the real
-   screenshot inside, soft shadow. Width is set by whoever
-   uses it; the height follows from the 390x844 aspect.     */
-
-.phone{
-  position:relative;
-  width:100%;
-  aspect-ratio:390/844;
-  background:#0E1510;
-  border-radius:13.5% / 6.3%;
-  padding:2.9%;
-  box-shadow:var(--shadow),0 0 0 1.5px rgba(255,255,255,.22) inset;
-}
-.phone__screen{
-  width:100%;height:100%;
-  border-radius:11.5% / 5.4%;
-  overflow:hidden;
-  background:var(--sky-1);
-}
-.phone__screen img{width:100%;height:100%;object-fit:cover;object-position:top}
-.phone__island{
-  position:absolute;z-index:2;
-  top:2.3%;left:50%;transform:translateX(-50%);
-  width:30%;height:3.1%;
-  background:#0E1510;
-  border-radius:999px;
-}
-.phone--sm{box-shadow:var(--shadow-sm),0 0 0 1.5px rgba(255,255,255,.2) inset}
+@media (min-width:620px){.foot__in{flex-direction:row;justify-content:space-between}}
 
 /* ───────────────────────── motion ───────────────────────── */
 
-.reveal{
-  opacity:0;
-  transform:translateY(22px);
-  transition:opacity .66s ease,transform .66s cubic-bezier(.22,.8,.3,1);
-}
-.reveal.is-in{opacity:1;transform:none}
-
 .float{animation:float 6.5s ease-in-out infinite}
-@keyframes float{
-  0%,100%{transform:translateY(0)}
-  50%{transform:translateY(-12px)}
+@keyframes float{0%,100%{translate:0 0}50%{translate:0 -12px}}
+
+@keyframes sun-glow{
+  0%,100%{opacity:.9;transform:scale(1)}
+  50%{opacity:1;transform:scale(1.04)}
+}
+@keyframes bamboo-sway{
+  0%,100%{transform:rotate(-1.2deg)}
+  50%{transform:rotate(1.2deg)}
+}
+@keyframes leaf-fall{
+  0%{transform:translate3d(0,-40px,0) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  50%{transform:translate3d(26px,50vh,0) rotate(160deg)}
+  90%{opacity:1}
+  100%{transform:translate3d(-10px,105vh,0) rotate(320deg);opacity:0}
+}
+@keyframes flap{from{transform:scaleX(1)}to{transform:scaleX(.35)}}
+@keyframes butterfly{
+  0%{transform:translate3d(0,0,0)}
+  25%{transform:translate3d(90px,-40px,0)}
+  50%{transform:translate3d(160px,10px,0)}
+  75%{transform:translate3d(60px,50px,0)}
+  100%{transform:translate3d(0,0,0)}
 }
 
 /* everything above is decoration — switch it all off on request */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .reveal{opacity:1;transform:none;transition:none}
+  .fx{opacity:1;transform:none;transition:none}
   .float{animation:none}
-  .btn{transition:none}
-  .q summary::after{transition:none}
+  .w-fall,.w-fly{display:none}
   *,*::before,*::after{
     animation-duration:.001ms !important;
     animation-iteration-count:1 !important;
