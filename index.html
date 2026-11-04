@@ -54,9 +54,8 @@
       <a href="#how">how it works</a>
       <a href="#features">features</a>
       <a href="#levels">levels</a>
-      <a href="#waitlist" class="nav__wait">join the waitlist</a>
     </nav>
-    <a class="btn btn--sm" href="https://tryrilo.vercel.app" target="_blank" rel="noopener">try rilo</a>
+    <a class="btn btn--sm nav__wait" href="#waitlist">join the waitlist</a>
   </div>
 </header>
 
@@ -68,13 +67,13 @@
 <!-- ───────────────────────── 1 · hero · grass ───────────────────────── -->
 <section class="scene scene--hero" id="top" data-theme="grass" data-name="home">
   <div class="wrap hero">
+    <p class="soon fx" style="--i:0" data-shipped="out now on iPhone">coming soon to iPhone</p>
     <h1 class="hero__title fx" style="--i:0">your screen-time buddy.</h1>
     <p class="hero__sub fx" style="--i:1">rilo gets you off your phone and gives you something better to do.</p>
 
     <div class="hero__cta fx" style="--i:2">
-      <a class="btn btn--lg" href="https://tryrilo.vercel.app" target="_blank" rel="noopener">try rilo now</a>
       <!-- swapped for a real App Store button once APP_STORE_URL is set -->
-      <a class="btn btn--lg btn--ghost" id="app-store-slot" href="#waitlist">join the waitlist</a>
+      <a class="btn btn--lg" id="app-store-slot" href="#waitlist">join the waitlist</a>
     </div>
 
     <div class="fan" role="group" aria-label="rilo on iPhone">
@@ -253,10 +252,6 @@
       </div>
     </div>
 
-    <p class="end__try fx" style="--i:3">
-      <a class="btn btn--lg btn--ghost" href="https://tryrilo.vercel.app" target="_blank" rel="noopener">or try rilo now</a>
-    </p>
-
     <p class="price fx" style="--i:4">
       free to start. <strong>rilo pro is $4.99/mo or $39.99/yr</strong>, with a 7-day free trial.
     </p>
@@ -264,7 +259,7 @@
     <div class="faq fx" id="faq" style="--i:5">
       <details class="q">
         <summary><span>does rilo really block apps?</span></summary>
-        <p>on iPhone he uses apple's screen time tools, so the block is real. the web demo just shows you how it works.</p>
+        <p>on iPhone he uses apple's screen time tools, so the block is real.</p>
       </details>
       <details class="q">
         <summary><span>is rilo listening to me?</span></summary>
