@@ -248,12 +248,21 @@
       <p class="wait__error" id="wait-error" role="alert" hidden></p>
 
       <div class="wait__done" id="wait-done" hidden>
-        <p>you're on the list. see you soon.</p>
+        <!-- the optional survey offer; js/survey.js runs it -->
+        <div class="sv-invite" id="sv-invite">
+          <p>you're in! <span>help shape rilo? (30 sec, all optional)</span></p>
+          <button type="button" class="btn btn--lg" id="sv-go">let's go</button>
+          <button type="button" class="sv-link" id="sv-no">no thanks</button>
+        </div>
+        <p id="sv-bye" hidden>you're on the list. see you soon.</p>
       </div>
+
+      <div id="survey" hidden></div>
     </div>
 
     <p class="price fx" style="--i:4">
       free to download. rilo pro unlocks more.
+      <small class="price__note">pricing isn't final and may change before launch.</small>
     </p>
 
     <div class="faq fx" id="faq" style="--i:5">
@@ -271,7 +280,7 @@
       </details>
       <details class="q">
         <summary><span>is it free?</span></summary>
-        <p>rilo is free to download. rilo pro unlocks extra features.</p>
+        <p>rilo is free to download. rilo pro unlocks extra features. pricing isn't final and may change before launch.</p>
       </details>
       <details class="q">
         <summary><span>when is it on the app store?</span></summary>
@@ -296,6 +305,7 @@
   </div>
 </footer>
 
+<script src="js/survey.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>

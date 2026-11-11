@@ -156,6 +156,8 @@ function wireWaitlist() {
 
     form.hidden = true;
     done.hidden = false;
+    /* js/survey.js offers the optional survey and sends this email with it */
+    document.dispatchEvent(new CustomEvent('waitlist:joined', { detail: { email } }));
     return undefined;
   });
 }
